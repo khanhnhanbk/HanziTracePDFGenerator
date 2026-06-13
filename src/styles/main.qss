@@ -1,0 +1,119 @@
+/* Thiết lập Font chữ và màu nền tổng thể */
+QWidget {
+    font-family: "Segoe UI", "Microsoft YaHei", "Arial", sans-serif;
+    font-size: 14px;
+    background-color: #f8fafc; /* Màu nền xám/xanh nhẹ dịu mát (slate-50) */
+    color: #1e293b; /* Màu chữ slate-800 đậm nét */
+}
+
+/* Kiểu nhãn tiêu đề chính */
+QLabel#HeaderLabel {
+    font-weight: bold;
+    font-size: 15px;
+    color: #991b1b; /* Màu đỏ thẫm quý phái */
+    margin-bottom: 2px;
+}
+
+/* Hộp nhập liệu lớn */
+QTextEdit, QLineEdit {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0; /* Viền xám nhạt tinh tế */
+    border-radius: 12px; /* Bo góc mềm mại kiểu modern */
+    padding: 10px;
+    color: #0f172a;
+    selection-background-color: #fca5a5; /* Màu bôi đen text */
+}
+
+QTextEdit:focus, QLineEdit:focus {
+    border: 1.5px solid #f87171; /* Chuyển viền sang Đỏ hồng khi click */
+    background-color: #ffffff;
+}
+
+/* NÚT CHÍNH: Màu gradient Đỏ son pha Hổ phách (Phím Xuất PDF) */
+QPushButton#PrimaryButton, QPushButton:default {
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #ef4444, stop:1 #f59e0b
+    ); /* Gradient đỏ sang cam vàng đặc trưng */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px; /* Bo góc nút */
+    padding: 12px 20px;
+    min-height: 18px;
+}
+
+QPushButton#PrimaryButton:hover, QPushButton:default:hover {
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #dc2626, stop:1 #d97706
+    ); /* Đậm màu hơn một chút khi di chuột qua */
+}
+
+QPushButton#PrimaryButton:pressed, QPushButton:default:pressed {
+    background: #b91c1c; /* Đỏ sậm khi click */
+}
+
+/* NÚT PHỤ: Màu nền sáng lịch lãm (Chọn size ô, Khổ giấy...) */
+QPushButton#SecondaryButton, QPushButton {
+    background-color: #ffffff;
+    color: #475569; /* Chữ xám đậm */
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 500;
+}
+
+QPushButton#SecondaryButton:hover, QPushButton:hover {
+    background-color: #f1f5f9; /* Chuyển nền xám nhẹ khi hover */
+    color: #ef4444; /* Đổi màu chữ sang đỏ nhẹ tạo điểm nhấn */
+    border-color: #fca5a5;
+}
+
+QPushButton#SecondaryButton:pressed, QPushButton:pressed {
+    background-color: #e2e8f0;
+}
+
+/* Tùy biến thanh trượt kéo (Slider) cho số lượng chữ mờ */
+QSlider::groove:horizontal {
+    border: 1px solid #e2e8f0;
+    height: 6px;
+    background: #cbd5e1;
+    margin: 2px 0;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #ef4444;
+    border: 2px solid #ffffff;
+    width: 16px;
+    height: 16px;
+    margin: -5px 0;
+    border-radius: 8px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: #f59e0b; /* Chuyển sang cam khi kéo */
+}
+
+/* Bo tròn các hộp Combo box chọn kích cỡ / font */
+QComboBox {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 12px;
+    min-width: 6em;
+}
+
+QComboBox:on-show {
+    border-color: #fca5a5;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 25px;
+    border-left-width: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
