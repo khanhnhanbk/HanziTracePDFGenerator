@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+import os
 
 
 @dataclass
@@ -11,5 +12,5 @@ class UserSettings:
 
     margin_left: int = 25
     margin_top: int = 35
-    output_directory: str = ""
+    output_directory: str = field(default_factory=os.getcwd)
     output_filename: str = "output.pdf"
