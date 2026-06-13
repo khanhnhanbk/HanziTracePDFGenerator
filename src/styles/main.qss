@@ -59,8 +59,10 @@ QGroupBox {
 }
 QGroupBox::title {
     subcontrol-origin: margin;
+    subcontrol-position: top left;
+    top: 4px; 
     left: 14px;
-    padding: 0 8px;
+    padding: 0px 4px;
 }
 QSpinBox {
     background: white;
