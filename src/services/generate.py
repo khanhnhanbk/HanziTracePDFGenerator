@@ -1,6 +1,7 @@
 import csv
 import math
 import os
+import sys
 from pathlib import Path
 
 from pypinyin import pinyin, Style
@@ -11,7 +12,10 @@ from reportlab.pdfbase import pdfmetrics
 
 from src.datas.usersetting import UserSettings
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys._MEIPASS)
+else:
+    BASE_DIR = Path(__file__).resolve().parent.parent
 
 FONT_PATH = BASE_DIR / "statics" / "fonts" / "Kaiti.ttf"
 PYIYIN_FONT = BASE_DIR / "statics" / "fonts" / "SpaceGrotesk.ttf"
