@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QApplication
 )
 
-from ui.main_window import MainWindow
+from src.ui.main_window import MainWindow
 
 qss_file = Path(__file__).parent / "styles" / "main.qss"
 

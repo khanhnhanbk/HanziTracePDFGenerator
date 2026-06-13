@@ -9,11 +9,12 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 
+from src.datas.usersetting import UserSettings
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 FONT_PATH = BASE_DIR / "statics" / "fonts" / "Kaiti.ttf"
 PYIYIN_FONT = BASE_DIR / "statics" / "fonts" / "SpaceGrotesk.ttf"
-TRACE_COLUMNS = 10
 
 
 def get_pinyin(char):
@@ -63,9 +64,7 @@ def draw_mizige_box(c, x, y, size):
     c.setDash()
 
 
-def draw_character(
-    c, char, x, y, size, font_name, column_index, trace_columns=TRACE_COLUMNS
-):
+def draw_character(c, char, x, y, size, font_name, column_index, trace_columns):
     font_size = size * 0.75
     c.setFont(font_name, font_size)
     text_width = pdfmetrics.stringWidth(char, font_name, font_size)
@@ -81,9 +80,22 @@ def draw_character(
 
 
 def generate_chinese_practice_sheet(
-    filename="chinese_practice_sheet.pdf",
-    characters="永和九年岁在癸丑暮春之初初床",
+    characters="你好", user_settings: UserSettings | None = None
 ):
+    if user_settings is None:
+        user_settings = UserSettings()
+
+    filename = Path(user_settings.output_directory) / user_settings.output_filename
+    # Ensure filename has .pdf suffix
+    if not filename.suffix:
+        filename = filename.with_suffix(".pdf")
+    # Ensure output directory exists
+    try:
+        filename.parent.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    # ReportLab expects a string path or file-like object
+    filename_str = str(filename)
     if isinstance(characters, (list, tuple)):
         characters = "".join(characters)
 
@@ -96,12 +108,13 @@ def generate_chinese_practice_sheet(
     pdfmetrics.registerFont(TTFont("PinyinFont", PYIYIN_FONT))
     pinyin_font_name = "PinyinFont"
 
-    c = canvas.Canvas(filename, pagesize=A4)
+    c = canvas.Canvas(filename_str, pagesize=A4)
     width, height = A4
 
-    margin_left = 25
-    margin_top = 35
-    grid_size = 45
+    margin_left = user_settings.margin_left
+    margin_top = user_settings.margin_top
+    grid_size = user_settings.grid_size
+
     usable_width = width - margin_left * 2
     usable_height = height - margin_top * 2
 
@@ -117,27 +130,38 @@ def generate_chinese_practice_sheet(
             char_index = index_offset + row
             char = characters[char_index] if char_index < len(characters) else ""
 
-            if char:
-                draw_pinyin(pinyin_font_name, c, margin_left, grid_size, current_y, char)
+            if char and user_settings.show_pinyin:
+                draw_pinyin(
+                    pinyin_font_name, c, margin_left, grid_size, current_y, char
+                )
 
-            for col in range(1, cols_per_page ):
+            for col in range(1, cols_per_page):
                 current_x = margin_left + (col * grid_size)
                 draw_mizige_box(c, current_x, current_y, grid_size)
                 if char:
                     draw_character(
-                        c, char, current_x, current_y, grid_size, font_name, col
+                        c,
+                        char,
+                        current_x,
+                        current_y,
+                        grid_size,
+                        font_name,
+                        col,
+                        user_settings.trace_columns,
                     )
 
         if page < page_count - 1:
             c.showPage()
 
     c.save()
-    print(f"Success: Sheet saved as '{filename}'")
+    print(f"Success: Sheet saved as '{filename_str}'")
+
 
 def draw_pinyin(pinyin_font_name, c, margin_left, grid_size, current_y, char):
     char_pinyin = get_pinyin(char)
-    c.setFont(pinyin_font_name, 12)
-    c.setFillColorRGB(0,0,0)
+    font_size = grid_size / 4
+    c.setFont(pinyin_font_name, font_size)
+    c.setFillColorRGB(0, 0, 0)
     pinyin_x = margin_left - 5
     pinyin_y = current_y + grid_size * 0.6
     c.drawString(pinyin_x, pinyin_y, char_pinyin)
