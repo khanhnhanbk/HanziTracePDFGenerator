@@ -1,119 +1,99 @@
-/* Thiết lập Font chữ và màu nền tổng thể */
 QWidget {
     font-family: "Segoe UI", "Microsoft YaHei", "Arial", sans-serif;
     font-size: 14px;
-    background-color: #f8fafc; /* Màu nền xám/xanh nhẹ dịu mát (slate-50) */
-    color: #1e293b; /* Màu chữ slate-800 đậm nét */
+    background-color: #f8fafc; 
+    color: #1e293b; 
 }
-
-/* Kiểu nhãn tiêu đề chính */
 QLabel#HeaderLabel {
     font-weight: bold;
     font-size: 15px;
-    color: #991b1b; /* Màu đỏ thẫm quý phái */
+    color: #991b1b; 
     margin-bottom: 2px;
 }
-
-/* Hộp nhập liệu lớn */
 QTextEdit, QLineEdit {
     background-color: #ffffff;
-    border: 1.5px solid #e2e8f0; /* Viền xám nhạt tinh tế */
-    border-radius: 12px; /* Bo góc mềm mại kiểu modern */
+    border: 1.5px solid #e2e8f0; 
+    border-radius: 12px; 
     padding: 10px;
     color: #0f172a;
-    selection-background-color: #fca5a5; /* Màu bôi đen text */
 }
-
 QTextEdit:focus, QLineEdit:focus {
-    border: 1.5px solid #f87171; /* Chuyển viền sang Đỏ hồng khi click */
+    border: 1.5px solid #f87171; 
     background-color: #ffffff;
 }
-
-/* NÚT CHÍNH: Màu gradient Đỏ son pha Hổ phách (Phím Xuất PDF) */
-QPushButton#PrimaryButton, QPushButton:default {
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:0,
-        stop:0 #ef4444, stop:1 #f59e0b
-    ); /* Gradient đỏ sang cam vàng đặc trưng */
+QPushButton#PrimaryButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #ef4444, stop:1 #f59e0b); 
     color: white;
     font-weight: bold;
     border: none;
-    border-radius: 12px; /* Bo góc nút */
+    border-radius: 12px; 
     padding: 12px 20px;
-    min-height: 18px;
+    font-size: 15px;
 }
-
-QPushButton#PrimaryButton:hover, QPushButton:default:hover {
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:0,
-        stop:0 #dc2626, stop:1 #d97706
-    ); /* Đậm màu hơn một chút khi di chuột qua */
+QPushButton#PrimaryButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dc2626, stop:1 #d97706); 
 }
-
-QPushButton#PrimaryButton:pressed, QPushButton:default:pressed {
-    background: #b91c1c; /* Đỏ sậm khi click */
+QPushButton#PrimaryButton:pressed {
+    background: #b91c1c; 
 }
-
-/* NÚT PHỤ: Màu nền sáng lịch lãm (Chọn size ô, Khổ giấy...) */
-QPushButton#SecondaryButton, QPushButton {
+QPushButton#SecondaryButton {
     background-color: #ffffff;
-    color: #475569; /* Chữ xám đậm */
+    color: #475569; 
     border: 1px solid #cbd5e1;
     border-radius: 10px;
     padding: 10px 16px;
-    font-weight: 500;
 }
-
-QPushButton#SecondaryButton:hover, QPushButton:hover {
-    background-color: #f1f5f9; /* Chuyển nền xám nhẹ khi hover */
-    color: #ef4444; /* Đổi màu chữ sang đỏ nhẹ tạo điểm nhấn */
+QPushButton#SecondaryButton:hover {
+    background-color: #f1f5f9; 
+    color: #ef4444; 
     border-color: #fca5a5;
 }
-
-QPushButton#SecondaryButton:pressed, QPushButton:pressed {
-    background-color: #e2e8f0;
-}
-
-/* Tùy biến thanh trượt kéo (Slider) cho số lượng chữ mờ */
-QSlider::groove:horizontal {
+QGroupBox {
+    background: white;
     border: 1px solid #e2e8f0;
-    height: 6px;
-    background: #cbd5e1;
-    margin: 2px 0;
-    border-radius: 3px;
+    border-radius: 14px;
+    margin-top: 14px;
+    padding-top: 18px;
+    font-weight: 600;
+    color: #991b1b;
 }
-
-QSlider::handle:horizontal {
-    background: #ef4444;
-    border: 2px solid #ffffff;
-    width: 16px;
-    height: 16px;
-    margin: -5px 0;
-    border-radius: 8px;
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 14px;
+    padding: 0 8px;
 }
-
-QSlider::handle:horizontal:hover {
-    background: #f59e0b; /* Chuyển sang cam khi kéo */
-}
-
-/* Bo tròn các hộp Combo box chọn kích cỡ / font */
-QComboBox {
-    background-color: #ffffff;
+QSpinBox {
+    background: white;
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
-    padding: 6px 12px;
-    min-width: 6em;
+    padding: 6px 10px;
 }
-
-QComboBox:on-show {
-    border-color: #fca5a5;
+QSpinBox:focus {
+    border-color: #f87171;
 }
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 25px;
-    border-left-width: 0px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+QCheckBox {
+    spacing: 8px;
+    color: #334155;
+}
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
+}
+QCheckBox::indicator:checked {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+/* Hide arrows/step buttons on numeric input widgets */
+QSpinBox::up-button, QSpinBox::down-button,
+QDoubleSpinBox::up-button, QDoubleSpinBox::down-button {
+    width: 0px;
+    height: 0px;
+    border: none;
+    background: transparent;
+}
+QSpinBox::up-arrow, QSpinBox::down-arrow,
+QDoubleSpinBox::up-arrow, QDoubleSpinBox::down-arrow {
+    image: none;
 }
