@@ -1,7 +1,13 @@
+import os
+from pathlib import Path
+
+from reportlab.lib.pagesizes import A4
 from PySide6.QtWidgets import (
     QCheckBox,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPushButton,
     QTextEdit,
     QVBoxLayout,
@@ -13,6 +19,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.datas.usersetting import UserSettings
+from src.services.normalize import normalizer
 from src.services.generate import generate_chinese_practice_sheet
 
 
@@ -65,6 +72,9 @@ class MainWindow(QWidget):
         self.trace_columns_spin.setMaximum(50)
         settings_layout.addWidget(self.trace_columns_spin, 0, 3)
 
+        # Connect grid size signal before setting values
+        self.grid_size_spin.valueChanged.connect(self.update_page_info)
+
         # Row 1: Margins Left & Top
         settings_layout.addWidget(QLabel("Lề trái:"), 1, 0)
         self.margin_left_spin = QSpinBox()
@@ -78,9 +88,18 @@ class MainWindow(QWidget):
         self.margin_top_spin.setMaximum(100)
         settings_layout.addWidget(self.margin_top_spin, 1, 3)
 
-        # Row 2: Checkbox Option spanning across columns
+        # Connect margin signals
+        self.margin_left_spin.valueChanged.connect(self.update_page_info)
+        self.margin_top_spin.valueChanged.connect(self.update_page_info)
+
+        # Row 2: A4 grid preview
+        self.page_info_label = QLabel("Hàng x Cột trên A4: 0 x 0")
+        self.page_info_label.setObjectName("HeaderLabel")
+        settings_layout.addWidget(self.page_info_label, 2, 0, 1, 4)
+
+        # Row 3: Checkbox Option spanning across columns
         self.show_pinyin_check = QCheckBox("Bao gồm chú âm (Pinyin) phía trên ký tự")
-        settings_layout.addWidget(self.show_pinyin_check, 2, 0, 1, 4)
+        settings_layout.addWidget(self.show_pinyin_check, 3, 0, 1, 4)
 
         settings_group.setLayout(settings_layout)
         main_layout.addWidget(settings_group)
@@ -112,15 +131,48 @@ class MainWindow(QWidget):
         io_group.setLayout(io_layout)
         main_layout.addWidget(io_group)
 
-        # 5. Primary Action Button
+        # 5. Action Buttons
+        action_layout = QHBoxLayout()
+        action_layout.setSpacing(12)
+
+        self.normalize_btn = QPushButton("Chuẩn hóa văn bản")
+        self.normalize_btn.setObjectName("SecondaryButton")
+        self.normalize_btn.clicked.connect(self.normalize_text)
+        action_layout.addWidget(self.normalize_btn)
+
         self.generate_btn = QPushButton("Tạo PDF phiếu luyện")
         self.generate_btn.setObjectName(
             "PrimaryButton"
         )  # Activates your gradient styling
         self.generate_btn.clicked.connect(self.generate)
-        main_layout.addWidget(self.generate_btn)
+        action_layout.addWidget(self.generate_btn)
+
+        main_layout.addLayout(action_layout)
 
         self.setLayout(main_layout)
+
+    def normalize_text(self):
+        raw_text = self.content_edit.toPlainText()
+        normalized = normalizer(raw_text)
+        self.content_edit.setPlainText(normalized)
+
+    def update_page_info(self):
+        grid_size = self.grid_size_spin.value()
+        margin_left = self.margin_left_spin.value()
+        margin_top = self.margin_top_spin.value()
+
+        if grid_size <= 0:
+            self.page_info_label.setText("Hàng x Cột trên A4: 0 x 0")
+            return
+
+        usable_width = A4[0] - margin_left * 2
+        usable_height = A4[1] - margin_top * 2
+        cols = max(0, int(usable_width // grid_size))
+        rows = max(0, int(usable_height // grid_size))
+
+        self.page_info_label.setText(
+            f"Hàng x Cột trên A4: {rows} x {cols}"
+        )
 
     def generate(self):
         self.save_settings()
@@ -129,9 +181,22 @@ class MainWindow(QWidget):
         if not self.user_settings.output_directory:
             self.user_settings.output_directory = os.getcwd()
 
-        generate_chinese_practice_sheet(
-            characters=content, user_settings=self.user_settings
-        )
+        try:
+            generate_chinese_practice_sheet(
+                characters=content, user_settings=self.user_settings
+            )
+            QMessageBox.information(
+                self,
+                "Hoàn tất",
+                "Tạo PDF thành công. Tệp đã được lưu vào:\n" +
+                str(Path(self.user_settings.output_directory) / self.user_settings.output_filename),
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                "Lỗi",
+                "Tạo PDF thất bại:\n" + str(exc),
+            )
 
     def load_settings(self):
         self.grid_size_spin.setValue(self.user_settings.grid_size)
@@ -141,6 +206,7 @@ class MainWindow(QWidget):
         self.margin_top_spin.setValue(self.user_settings.margin_top)
         self.directory_edit.setText(self.user_settings.output_directory)
         self.filename_edit.setText(self.user_settings.output_filename)
+        self.update_page_info()
 
     def save_settings(self):
         self.user_settings.grid_size = self.grid_size_spin.value()
