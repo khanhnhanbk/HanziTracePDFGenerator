@@ -131,6 +131,7 @@ def unique_preserve_order(items: list[str]) -> list[str]:
 def normalize_multi_char_text(
     text: str,
     separator: SeparatorEnum,
+    allow_duplicate: bool = False,
 ) -> str:
     """
     Normalize text as words/tokens.
@@ -142,8 +143,10 @@ def normalize_multi_char_text(
     tokens = split_tokens(text, separator)
 
     cleaned_tokens = [clean_token(token) for token in tokens]
+    cleaned_tokens = [token for token in cleaned_tokens if token]
 
-    cleaned_tokens = unique_preserve_order(cleaned_tokens)
+    if not allow_duplicate:
+        cleaned_tokens = unique_preserve_order(cleaned_tokens)
 
     separator_map = {
         SeparatorEnum.ENTER: "\n",
@@ -157,7 +160,7 @@ def normalize_multi_char_text(
     return output_separator.join(cleaned_tokens)
 
 
-def normalize_single_char_text(text: str) -> str:
+def normalize_single_char_text(text: str, allow_duplicate: bool = False) -> str:
     """
     Normalize text as individual characters.
     Example:
@@ -166,6 +169,9 @@ def normalize_single_char_text(text: str) -> str:
         你好中国
     """
     text = clean_token(text)
+
+    if allow_duplicate:
+        return text
 
     seen = set()
     result = []
@@ -202,6 +208,7 @@ def normalizer(
         return normalize_multi_char_text(
             raw_text,
             user_settings.separator,
+            user_settings.allow_duplicate,
         )
 
-    return normalize_single_char_text(raw_text)
+    return normalize_single_char_text(raw_text, user_settings.allow_duplicate)

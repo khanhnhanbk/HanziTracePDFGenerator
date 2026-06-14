@@ -55,7 +55,7 @@ class SettingsPanel(QWidget):
         # -----------------------
         self.page_info_label = QLabel()
         self.page_info_label.setObjectName("HeaderLabel")
-
+        self.allow_duplicate_check = QCheckBox("Cho phép trùng lặp")
         # -----------------------
         # Layout rows
         # -----------------------
@@ -82,6 +82,7 @@ class SettingsPanel(QWidget):
 
         grid.addWidget(QLabel("Tách bởi"), 3, 2)
         grid.addWidget(self.separator_combo, 3, 3)
+        grid.addWidget(self.allow_duplicate_check, 4, 0, 1, 2)
 
         layout.addWidget(group)
 
@@ -91,7 +92,7 @@ class SettingsPanel(QWidget):
         self.grid_size_spin.valueChanged.connect(self.update_page_info)
         self.margin_left_spin.valueChanged.connect(self.update_page_info)
         self.margin_top_spin.valueChanged.connect(self.update_page_info)
-
+        self.allow_duplicate_check.setChecked(False)
         self.update_page_info()
 
     def update_page_info(self):
