@@ -81,6 +81,10 @@ class MainWindow(QWidget):
             self.on_multi_char_changed
         )
 
+        self.settings_panel.allow_duplicate_check.toggled.connect(
+            lambda v: setattr(self.user_settings, "allow_duplicate", bool(v))
+        )
+
         self.settings_panel.separator_combo.currentIndexChanged.connect(
             lambda i: setattr(self.user_settings, "separator", self._sep_options[i])
         )
@@ -97,6 +101,7 @@ class MainWindow(QWidget):
         self.settings_panel.margin_top_spin.setValue(self.user_settings.margin_top)
 
         self.settings_panel.show_pinyin_check.setChecked(self.user_settings.show_pinyin)
+        self.settings_panel.allow_duplicate_check.setChecked(self.user_settings.allow_duplicate)
 
         # IMPORTANT: set first, then sync UI
         self.settings_panel.multi_char_check.setChecked(self.user_settings.multi_char_line)
@@ -207,6 +212,7 @@ class MainWindow(QWidget):
         except Exception:
             self.user_settings.separator = SeparatorEnum.ENTER
 
+        self.user_settings.allow_duplicate = self.settings_panel.allow_duplicate_check.isChecked()
         self.user_settings.margin_left = self.settings_panel.margin_left_spin.value()
         self.user_settings.margin_top = self.settings_panel.margin_top_spin.value()
 

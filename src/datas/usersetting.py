@@ -18,7 +18,8 @@ class UserSettings:
     separator: SeparatorEnum = SeparatorEnum.ENTER
 
     show_pinyin: bool = True
-    show_wubi:bool = True
+    show_wubi: bool = True
+    allow_duplicate: bool = False
 
     margin_left: int = 25
     margin_top: int = 35
