@@ -147,7 +147,7 @@ class MainWindow(QWidget):
         from src.services.normalize import normalizer
 
         raw = self.content_panel.text
-        self.content_panel.set_text(normalizer(raw))
+        self.content_panel.set_text(normalizer(raw, self.user_settings))
 
     def handle_browse(self):
         directory = QFileDialog.getExistingDirectory(
