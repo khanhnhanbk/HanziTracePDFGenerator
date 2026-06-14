@@ -3,6 +3,7 @@ import math
 import os
 import sys
 from pathlib import Path
+import re
 
 from pypinyin import pinyin, Style
 from reportlab.pdfbase.ttfonts import TTFont
@@ -11,6 +12,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 
 from src.datas.usersetting import UserSettings
+from src.datas.usersetting import SeparatorEnum
 
 if getattr(sys, "frozen", False):
     BASE_DIR = Path(sys._MEIPASS)
@@ -94,7 +96,20 @@ def generate_chinese_practice_sheet(
         user_settings = UserSettings()
 
     if user_settings.multi_char_line:
-        lines = parse_lines(characters)
+        sep = getattr(user_settings, "separator", SeparatorEnum.ENTER)
+        if sep == SeparatorEnum.ENTER:
+            tokens = parse_lines(characters)
+        elif sep == SeparatorEnum.COMMA:
+            tokens = [t.strip() for t in re.split(r"[\n,]+", characters) if t.strip()]
+        elif sep == SeparatorEnum.SEMICOLON:
+            tokens = [t.strip() for t in re.split(r"[\n;；]+", characters) if t.strip()]
+        elif sep == SeparatorEnum.ANY:
+            tokens = [t.strip() for t in re.split(r"[\n,;，；、]+", characters) if t.strip()]
+        elif sep == SeparatorEnum.NONE:
+            tokens = [characters] if characters and characters.strip() else []
+        else:
+            tokens = parse_lines(characters)
+        lines = tokens
     else:
         lines = [c for c in characters if not c.isspace()]
 
@@ -181,9 +196,29 @@ def generate_chinese_practice_sheet(
 
 def draw_pinyin(pinyin_font_name, c, margin_left, grid_size, current_y, char):
     char_pinyin = get_pinyin(char)
-    font_size = grid_size / 4
+    # choose a readable font size and wrap pinyin if it's too long
+    font_size = max(8, int(grid_size / 4))
     c.setFont(pinyin_font_name, font_size)
     c.setFillColorRGB(0, 0, 0)
+
+    available_width = grid_size - 4
+    tokens = char_pinyin.split()
+    lines = []
+    current = ""
+    for tok in tokens:
+        test = (current + " " + tok).strip() if current else tok
+        if pdfmetrics.stringWidth(test, pinyin_font_name, font_size) <= available_width:
+            current = test
+        else:
+            if current:
+                lines.append(current)
+            current = tok
+    if current:
+        lines.append(current)
+
+    line_height = font_size * 0.95
+    start_y = current_y + grid_size * 0.6 + (len(lines) - 1) * line_height
     pinyin_x = margin_left - 5
-    pinyin_y = current_y + grid_size * 0.6
-    c.drawString(pinyin_x, pinyin_y, char_pinyin)
+    for i, line in enumerate(lines):
+        pinyin_y = start_y - i * line_height
+        c.drawString(pinyin_x, pinyin_y, line)
