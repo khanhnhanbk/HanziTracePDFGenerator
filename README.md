@@ -52,6 +52,7 @@
   - ✓ Xóa tất cả dấu câu (chấm, phẩy, hỏi, chém, ...)
   - ✓ Xóa khoảng trắng
   - ✓ Giữ lại chỉ các chữ Hán duy nhất (không trùng lặp)
+  - ✓ Hỗ trợ **từ ghép** khi bật chế độ **Từ ghép** để giữ nguyên các cụm từ và tách nội dung theo dấu phân cách
 
 #### 3. Điều Chỉnh Cài Đặt
 
@@ -123,6 +124,7 @@
 ## ⚙️ Tính Năng
 
 ✅ **Tự Động Chuẩn Hóa:** Xóa dấu câu, khoảng trắng, chữ trùng
+✅ **Từ Ghép:** Giữ nguyên cụm từ khi chế độ **Từ ghép** được bật
 ✅ **Hiển Thị Pinyin:** Dễ dàng biết cách phát âm chữ Hán
 ✅ **Lưới Mi Tự:** Chuẩn bố cục truyền thống Trung Quốc
 ✅ **Tùy Chỉnh Linh Hoạt:** Điều chỉnh kích thước, lề, số cột
@@ -167,6 +169,6 @@ Nếu gặp vấn đề:
 
 ---
 
-**Phiên Bản:** v1.0  
+**Phiên Bản:** v1.1  
 **Ngôn Ngữ:** Tiếng Việt  
 **Định Dạng Xuất:** PDF (A4)  
