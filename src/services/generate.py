@@ -13,6 +13,7 @@ from reportlab.pdfbase import pdfmetrics
 
 from src.datas.usersetting import UserSettings
 from src.datas.usersetting import SeparatorEnum
+from src.services.normalize import FULLWIDTH_TO_ASCII, normalizer
 
 if getattr(sys, "frozen", False):
     BASE_DIR = Path(sys._MEIPASS)
@@ -95,6 +96,11 @@ def generate_chinese_practice_sheet(
     if user_settings is None:
         user_settings = UserSettings()
 
+    # normalize input first
+    characters = normalizer(
+        characters,
+        user_settings,
+    )
     if user_settings.multi_char_line:
         sep = getattr(user_settings, "separator", SeparatorEnum.ENTER)
         if sep == SeparatorEnum.ENTER:
