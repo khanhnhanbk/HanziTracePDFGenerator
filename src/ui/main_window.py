@@ -38,11 +38,10 @@ class MainWindow(QWidget):
         layout.addWidget(self.action_panel)
 
         self._sep_options = [
+            SeparatorEnum.ANY,
             SeparatorEnum.ENTER,
             SeparatorEnum.COMMA,
             SeparatorEnum.SEMICOLON,
-            SeparatorEnum.ANY,
-            SeparatorEnum.NONE,
         ]
 
         self.connect_signals()
@@ -131,8 +130,8 @@ class MainWindow(QWidget):
 
         # auto fix value when locked
         if not checked:
-            self.user_settings.separator = SeparatorEnum.NONE
-            idx = self._sep_options.index(SeparatorEnum.NONE)
+            self.user_settings.separator = SeparatorEnum.COMMA
+            idx = self._sep_options.index(SeparatorEnum.COMMA)
             self.settings_panel.separator_combo.setCurrentIndex(idx)
 
     def on_multi_char_changed(self, checked: bool):
@@ -164,20 +163,15 @@ class MainWindow(QWidget):
         if filename:
             self.user_settings.output_filename = filename
 
-        self.save_settings()
-
         characters = self.content_panel.text
 
-        if not self.user_settings.output_directory:
-            self.user_settings.output_directory = os.getcwd()
-
         try:
-            from src.services.generate import generate_chinese_practice_sheet
+            from src.services.generate import ChinesePracticeSheetGenerator
 
-            generate_chinese_practice_sheet(
+            ChinesePracticeSheetGenerator(
                 characters=characters,
                 user_settings=self.user_settings,
-            )
+            ).generate()
 
             QMessageBox.information(
                 self,

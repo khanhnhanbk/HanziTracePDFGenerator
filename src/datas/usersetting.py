@@ -9,7 +9,6 @@ class SeparatorEnum(Enum):
     COMMA = ','
     SEMICOLON = ';'
     ANY = 'ANY'
-    NONE = 'NONE'
     
 @dataclass
 class UserSettings:

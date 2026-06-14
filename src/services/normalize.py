@@ -40,24 +40,24 @@ PUNCTUATIONS = [
 # Supported characters:
 # - Chinese characters
 # Map common fullwidth punctuation to ASCII equivalents for consistent handling
-FULLWIDTH_TO_ASCII = str.maketrans({
-    '，': ',',
-    '。': '.',
-    '；': ';',
-    '：': ':',
-    '！': '!',
-    '？': '?',
-    '（': '(',
-    '）': ')',
-    '、': ',',
-})
+FULLWIDTH_TO_ASCII = str.maketrans(
+    {
+        "，": ",",
+        "。": ".",
+        "；": ";",
+        "：": ":",
+        "！": "!",
+        "？": "?",
+        "（": "(",
+        "）": ")",
+        "、": ",",
+    }
+)
 
 # - Latin letters
 # - Numbers
 # - Middle dot (·)
-ALLOWED_RE = re.compile(
-    r"[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFA-Za-z0-9·]"
-)
+ALLOWED_RE = re.compile(r"[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFA-Za-z0-9·]")
 
 
 def remove_punctuation(text: str, separator: SeparatorEnum) -> str:
@@ -70,6 +70,8 @@ def remove_punctuation(text: str, separator: SeparatorEnum) -> str:
     separator_equivalents = {
         SeparatorEnum.COMMA: [",", "，"],
         SeparatorEnum.SEMICOLON: [";", "；"],
+        SeparatorEnum.ENTER: ["\n"],
+        SeparatorEnum.ANY: [",", "，",";", "；","\n"],
     }
 
     equivalents = separator_equivalents.get(separator)
@@ -90,10 +92,7 @@ def clean_token(token: str) -> str:
     """
     token = "".join(token.split())
 
-    return "".join(
-        ch for ch in token
-        if ALLOWED_RE.match(ch)
-    )
+    return "".join(ch for ch in token if ALLOWED_RE.match(ch))
 
 
 def split_tokens(text: str, separator: SeparatorEnum) -> list[str]:
@@ -105,13 +104,10 @@ def split_tokens(text: str, separator: SeparatorEnum) -> list[str]:
 
     # Treat ASCII and fullwidth variants as equivalent when splitting
     if separator == SeparatorEnum.COMMA:
-            return re.split(r"[,，]+", text)
+        return re.split(r"[,，]+", text)
 
     if separator == SeparatorEnum.SEMICOLON:
-            return re.split(r"[;；]+", text)
-
-    if separator == SeparatorEnum.NONE:
-        return [text]
+        return re.split(r"[;；]+", text)
 
     # SeparatorEnum.ANY (include fullwidth comma/semicolon)
     return re.split(r"[\s,;，；]+", text)
@@ -145,10 +141,7 @@ def normalize_multi_char_text(
     """
     tokens = split_tokens(text, separator)
 
-    cleaned_tokens = [
-        clean_token(token)
-        for token in tokens
-    ]
+    cleaned_tokens = [clean_token(token) for token in tokens]
 
     cleaned_tokens = unique_preserve_order(cleaned_tokens)
 
@@ -156,7 +149,7 @@ def normalize_multi_char_text(
         SeparatorEnum.ENTER: "\n",
         SeparatorEnum.COMMA: ",",
         SeparatorEnum.SEMICOLON: ";",
-        SeparatorEnum.NONE: "",
+        SeparatorEnum.ANY: ",",
     }
 
     output_separator = separator_map.get(separator, " ")
@@ -203,13 +196,6 @@ def normalizer(
     raw_text = remove_punctuation(
         raw_text,
         user_settings.separator,
-    )
-
-    # Remove control characters
-    raw_text = re.sub(
-        r"[\x00-\x1F\x7F]+",
-        "",
-        raw_text,
     )
 
     if user_settings.multi_char_line:
