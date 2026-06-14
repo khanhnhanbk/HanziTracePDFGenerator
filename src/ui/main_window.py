@@ -49,6 +49,7 @@ class MainWindow(QWidget):
         self.settings_panel.margin_left_spin.setValue(self.user_settings.margin_left)
         self.settings_panel.margin_top_spin.setValue(self.user_settings.margin_top)
         self.settings_panel.show_pinyin_check.setChecked(self.user_settings.show_pinyin)
+        self.settings_panel.multi_char_check.setChecked(self.user_settings.multi_char_line)
 
         self.output_panel.directory_edit.setText(self.user_settings.output_directory)
         self.output_panel.filename_edit.setText(self.user_settings.output_filename)
@@ -75,6 +76,9 @@ class MainWindow(QWidget):
         )
         self.settings_panel.show_pinyin_check.toggled.connect(
             lambda v: setattr(self.user_settings, "show_pinyin", bool(v))
+        )
+        self.settings_panel.multi_char_check.toggled.connect(
+            lambda v: setattr(self.user_settings, "multi_char_line", bool(v))
         )
 
     def handle_normalize(self):
@@ -126,6 +130,7 @@ class MainWindow(QWidget):
         self.settings_panel.grid_size_spin.setValue(self.user_settings.grid_size)
         self.settings_panel.trace_columns_spin.setValue(self.user_settings.trace_columns)
         self.settings_panel.show_pinyin_check.setChecked(self.user_settings.show_pinyin)
+        self.settings_panel.multi_char_check.setChecked(self.user_settings.multi_char_line)
         self.settings_panel.margin_left_spin.setValue(self.user_settings.margin_left)
         self.settings_panel.margin_top_spin.setValue(self.user_settings.margin_top)
         self.output_panel.directory_edit.setText(self.user_settings.output_directory)
@@ -140,6 +145,7 @@ class MainWindow(QWidget):
         self.user_settings.grid_size = self.settings_panel.grid_size_spin.value()
         self.user_settings.trace_columns = self.settings_panel.trace_columns_spin.value()
         self.user_settings.show_pinyin = self.settings_panel.show_pinyin_check.isChecked()
+        self.user_settings.multi_char_line = self.settings_panel.multi_char_check.isChecked()
         self.user_settings.margin_left = self.settings_panel.margin_left_spin.value()
         self.user_settings.margin_top = self.settings_panel.margin_top_spin.value()
         self.user_settings.output_directory = self.output_panel.directory_edit.text()
