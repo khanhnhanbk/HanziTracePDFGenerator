@@ -51,7 +51,8 @@
 - Nhấn nút **"Chuẩn hóa văn bản"** để:
   - ✓ Xóa tất cả dấu câu (chấm, phẩy, hỏi, chém, ...)
   - ✓ Xóa khoảng trắng
-  - ✓ Giữ lại chỉ các chữ Hán duy nhất (không trùng lặp)
+  - ✓ Mặc định giữ lại chỉ các chữ Hán duy nhất (không trùng lặp)
+  - ✓ Bật **"Cho phép trùng lặp"** nếu bạn muốn giữ nguyên các ký tự/cụm từ trùng lặp
   - ✓ Hỗ trợ **từ ghép** khi bật chế độ **Từ ghép** để giữ nguyên các cụm từ và tách nội dung theo dấu phân cách
 
 #### 3. Điều Chỉnh Cài Đặt
