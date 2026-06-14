@@ -99,3 +99,7 @@ QSpinBox::up-arrow, QSpinBox::down-arrow,
 QDoubleSpinBox::up-arrow, QDoubleSpinBox::down-arrow {
     image: none;
 }
+QPushButton:focus {
+    outline: none;
+    border: none;
+}

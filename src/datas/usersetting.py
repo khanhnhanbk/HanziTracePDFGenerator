@@ -6,6 +6,7 @@ import os
 class UserSettings:
     grid_size: int = 45
     trace_columns: int = 10
+    multi_char_line: bool = False
 
     show_pinyin: bool = True
     show_wubi:bool = True

@@ -36,6 +36,10 @@ class SettingsPanel(QWidget):
             "Bao gồm chú âm (Pinyin)"
         )
 
+        self.multi_char_check = QCheckBox(
+            "Từ ghép"
+        )
+
         self.page_info_label = QLabel()
         self.page_info_label.setObjectName("HeaderLabel")
 
@@ -52,7 +56,8 @@ class SettingsPanel(QWidget):
         grid.addWidget(self.margin_top_spin, 1, 3)
 
         grid.addWidget(self.page_info_label, 2, 0, 1, 4)
-        grid.addWidget(self.show_pinyin_check, 3, 0, 1, 4)
+        grid.addWidget(self.show_pinyin_check, 3, 0, 1, 2)
+        grid.addWidget(self.multi_char_check, 3,3,1,2)
 
         layout.addWidget(group)
 
