@@ -103,3 +103,53 @@ QPushButton:focus {
     outline: none;
     border: none;
 }
+/* -------------------------
+   DISABLED STATE
+--------------------------*/
+QComboBox:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border: 1.5px solid #e2e8f0;
+}
+
+QComboBox:disabled:hover {
+    border-color: #e2e8f0;
+}
+
+QComboBox {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 10px;
+    color: #0f172a;
+    min-height: 20px;
+}
+
+QComboBox:focus {
+    border-color: #f87171;
+}
+
+QComboBox:hover {
+    border-color: #fca5a5;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 28px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    width: 0px;
+    height: 0px;
+}
+
+QComboBox QAbstractItemView {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    selection-background-color: #fee2e2;
+    selection-color: #991b1b;
+    outline: none;
+}
