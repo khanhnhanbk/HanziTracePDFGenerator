@@ -44,11 +44,10 @@ class SettingsPanel(QWidget):
 
         self.separator_combo = QComboBox()
         self.separator_combo.addItems([
+            "Tự động",
             "Xuống dòng",
             "Dấu phẩy (,)",
-            "Chấm phẩy (;)",
-            "Tự động",
-            "Không tách",
+            "Chấm phẩy (;)"
         ])
         
         # -----------------------
