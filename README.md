@@ -173,3 +173,9 @@ Nếu gặp vấn đề:
 **Phiên Bản:** v1.1  
 **Ngôn Ngữ:** Tiếng Việt  
 **Định Dạng Xuất:** PDF (A4)  
+
+## Giấy phép / License
+
+- Mã nguồn: [MIT](LICENSE).
+- Phông chữ Hán: [LXGW WenKai](https://github.com/lxgw/LxgwWenKai) (SIL OFL 1.1); Pinyin: Space Grotesk (SIL OFL 1.1).
+- Thư viện đi kèm bản build (PySide6/Qt LGPL-3.0, reportlab, pypinyin…): xem [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

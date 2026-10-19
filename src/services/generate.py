@@ -18,7 +18,7 @@ if getattr(sys, "frozen", False):
 else:
     BASE_DIR = Path(__file__).resolve().parent.parent
 
-FONT_PATH = BASE_DIR / "statics" / "fonts" / "Kaiti.ttf"
+FONT_PATH = BASE_DIR / "statics" / "fonts" / "LXGWWenKai-Regular.ttf"
 PYIYIN_FONT = BASE_DIR / "statics" / "fonts" / "SpaceGrotesk.ttf"
 
 
@@ -65,9 +65,9 @@ def build_output_file(
 
 class ChinesePracticeSheetGenerator:
 
-    pdfmetrics.registerFont(TTFont("KaiTi", FONT_PATH))
+    pdfmetrics.registerFont(TTFont("LXGWWenKai", FONT_PATH))
     pdfmetrics.registerFont(TTFont("PinyinFont", PYIYIN_FONT))
-    CHAR_FONT = "KaiTi"
+    CHAR_FONT = "LXGWWenKai"
     PINYIN_FONT = "PinyinFont"
     BLACK = (0, 0, 0)
     GRAY = (0.6, 0.6, 0.6)
